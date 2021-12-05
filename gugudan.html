@@ -1,0 +1,62 @@
+<!doctype html>
+<html>
+    <head>
+        <meta charset="UTF-8"/>
+        <title>구구단</title>
+        <script crossorigin scr="https://unpkg.com/react@16/umd/react.development.js"></script>
+        <script crossorigin scr="https://unpkg.com/react-dom@16/umd/react-dom.development.js"></script>              
+        <script src="https://unpkg.com/babel-standalone@6/babel.mic.js"></script>
+    </head>
+    <body>
+        <div id="root"></div>      
+        <script type="text/babel">
+            class GuGuDan extends React.Component{
+                constructor(props){     //지워도 됨.
+                    super(props);       //지워도 됨.
+                    this.state={        //앞에 this. 지워도 됨.
+                        first: Math.ceil(Math.random()*9),
+                        second: Math.ceil(Math.random()*9),
+                        value: '',                               //-->처음에는 아무것도 없으니까.
+                        result: '',
+                    };
+                }                       //지워도 됨.
+
+                //구구단 로직
+                onSubmit = (e) => {                 //따로 뺏을 때는 무조건 화살표 함수(직접 만들어준 함수들은 화살표 함수). function 안됨.
+                    e.preventDefault();
+                    if (parseInt(this.state.value) === this.state.first * this.state.second) {      //입력값 === 곱한 값
+                        this.setState({                             //정답일 때 화면
+                                result: '정답: ',
+                                first: Math.ceil(Math.random() * 9),
+                                second: Math.ceil(Math.random() * 9),
+                                value: '',              //다시 비워져야함.
+                        });
+                    } else {
+                        this.setState({
+                            result: '땡',           //first, second 없기 때문에 문제는 바뀌지 않음.
+                            value: '',
+                        });
+                    }
+                };
+
+                onChange = (e) => {this.setState({value: e.target.value});};
+                render(){
+                    return (
+                        <React.Fragment>       
+                            <div>{this.state.first} 곱하기 {this.state.second}는?</div>
+                            <form onSubmit={this.onSubmit}>              
+                                <input type="number" value={this.state.value} onChange={this.onChange} />
+                                
+                                <button type="submit">입력!</button>
+                            </form>
+                            <div>{this.state.result}</div>
+                        </React.Fragment>
+                    );
+                }
+            }
+        </script>
+        <script>
+            ReactDOM.render(<GuGuDan />,document.querySelector('#root'));              
+        </script>
+    </body>
+</html>
